@@ -23,6 +23,7 @@ public:
 
 private:
 
+    // TODO move to oxygen as string_to_wstring()
     std::wstring get_wstring_name();
 
     HINSTANCE m_hinstance;
