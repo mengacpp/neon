@@ -30,7 +30,7 @@ int neon::WindowsWindow::init()
     WNDCLASS wc = {};
     wc.lpfnWndProc   = WindowProc;
     wc.hInstance     = m_hinstance;
-    wc.lpszClassName = get_wstring_name().c_str();
+    wc.lpszClassName = L"oxygenWindowClass";
 
     if (!RegisterClass(&wc)) {
         std::cout << "Failed to register window class\n";
@@ -55,7 +55,7 @@ int neon::WindowsWindow::open()
 
     m_hwindow = CreateWindowEx(
         0,
-        get_wstring_name().c_str(),
+        L"oxygenWindowClass",
         get_wstring_name().c_str(),
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
@@ -92,8 +92,24 @@ int neon::WindowsWindow::open()
 
 std::wstring neon::WindowsWindow::get_wstring_name()
 {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    return converter.from_bytes(m_name);
+    if (m_name.empty()) return std::wstring();
+
+    int wideCharLength = MultiByteToWideChar(CP_UTF8, 0, m_name.c_str(), -1, nullptr, 0);
+    if (wideCharLength == 0) {
+        // Handle error
+        throw std::runtime_error("MultiByteToWideChar failed");
+    }
+
+    std::wstring output(wideCharLength, 0);
+    int result = MultiByteToWideChar(CP_UTF8, 0, m_name.c_str(), -1, &output[0], wideCharLength);
+    if (result == 0) {
+        // Handle error
+        throw std::runtime_error("MultiByteToWideChar failed");
+    }
+
+    // Remove null terminator included by Windows API
+    output.resize(wideCharLength - 1);
+    return output;
 }
 
 #endif
