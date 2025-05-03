@@ -17,14 +17,11 @@ class WindowsWindow : public Window
 public:
     WindowsWindow(const std::string &name);
 
-    int init() override;
+    void init() override;
 
-    int open() override;
+    void open() override;
 
 private:
-
-    // TODO move to oxygen as string_to_wstring()
-    std::wstring get_wstring_name();
 
     HINSTANCE m_hinstance;
     HWND m_hwindow;

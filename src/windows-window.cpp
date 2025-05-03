@@ -6,13 +6,19 @@
 #include <locale>
 #include <codecvt>
 
+std::wstring string_to_wstring(const std::string &str);
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     switch (uMsg) {
         case WM_CLOSE:
+            DestroyWindow(hwnd);
+            return 0;
+
+        case WM_DESTROY:
             PostQuitMessage(0);
             return 0;
-        case WM_DESTROY:
-            return 0;
+
+            break;
     }
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
@@ -20,10 +26,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 neon::WindowsWindow::WindowsWindow(const std::string &name)
 : Window(name)
 {
-
 }
 
-int neon::WindowsWindow::init()
+void neon::WindowsWindow::init()
 {
     m_hinstance = GetModuleHandle(nullptr);
 
@@ -33,22 +38,18 @@ int neon::WindowsWindow::init()
     wc.lpszClassName = L"oxygenWindowClass";
 
     if (!RegisterClass(&wc)) {
-        std::cout << "Failed to register window class\n";
-        return -1;
+        throw std::runtime_error("registration of window class 'oxygenWindowClass' failed.");
     }
 
     std::cout << "window initialized\n";
     m_is_initialized = true;
-
-    return 0;
 }
 
-int neon::WindowsWindow::open()
+void neon::WindowsWindow::open()
 {
     if(!m_is_initialized)
     {
-        std::cout << "Can't open Window " << m_name << ": not initialized\n";
-        return -1;
+        throw std::runtime_error("opening failed on '" + m_name + "': not initialized. call window::init() if you haven't to fix, or handle initialization errors first.");
     }
 
     std::cout << "Opening windows window\n";
@@ -56,15 +57,14 @@ int neon::WindowsWindow::open()
     m_hwindow = CreateWindowEx(
         0,
         L"oxygenWindowClass",
-        get_wstring_name().c_str(),
+        string_to_wstring(m_name).c_str(),
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
         nullptr, nullptr, m_hinstance, nullptr
     );
 
     if (!m_hwindow) {
-        std::cout << "Failed to create window\n";
-        return -1;
+        throw std::runtime_error("opening failed on'" + m_name + "': creation failed.");
     }
 
     ShowWindow(m_hwindow, SW_SHOW);
@@ -87,23 +87,20 @@ int neon::WindowsWindow::open()
     }
     
 
-    return 0;
 }
 
-std::wstring neon::WindowsWindow::get_wstring_name()
+std::wstring string_to_wstring(const std::string &str)
 {
-    if (m_name.empty()) return std::wstring();
+    if (str.empty()) return std::wstring();
 
-    int wideCharLength = MultiByteToWideChar(CP_UTF8, 0, m_name.c_str(), -1, nullptr, 0);
+    int wideCharLength = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, nullptr, 0);
     if (wideCharLength == 0) {
-        // Handle error
         throw std::runtime_error("MultiByteToWideChar failed");
     }
 
     std::wstring output(wideCharLength, 0);
-    int result = MultiByteToWideChar(CP_UTF8, 0, m_name.c_str(), -1, &output[0], wideCharLength);
+    int result = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, &output[0], wideCharLength);
     if (result == 0) {
-        // Handle error
         throw std::runtime_error("MultiByteToWideChar failed");
     }
 
