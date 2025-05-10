@@ -1,6 +1,6 @@
 #pragma once
 
-#include <iostream>
+#include <string>
 #include <memory>
 
 namespace neon
@@ -14,6 +14,7 @@ class Window
 {
 public:
     Window(const std::string &name);
+
     virtual ~Window() = default;
 
     virtual void init() = 0;
@@ -26,9 +27,8 @@ protected:
     bool m_is_initialized;
 
     bool m_is_running;
-private:
+private:    
 
-public:
 
 };
 

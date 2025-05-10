@@ -3,8 +3,7 @@
 #include "neon/windows-window.hpp"
 
 #include <string>
-#include <locale>
-#include <codecvt>
+#include <iostream>
 
 std::wstring string_to_wstring(const std::string &str);
 
@@ -51,6 +50,7 @@ void neon::WindowsWindow::open()
     {
         throw std::runtime_error("opening failed on '" + m_name + "': not initialized. call window::init() if you haven't to fix, or handle initialization errors first.");
     }
+
 
     std::cout << "Opening windows window\n";
 
