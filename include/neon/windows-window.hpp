@@ -5,7 +5,7 @@
 #define _UNICODE
 
 #include  <windows.h>
-#include <string>
+#include <string> //TODO remove this
 
 #include "window.hpp"
 

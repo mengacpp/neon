@@ -16,6 +16,6 @@ std::unique_ptr<Window> create_window(const std::string &name)
 #ifdef _WIN32
     return std::make_unique<WindowsWindow>(name);
 #endif
-
+    return nullptr;
 }
 }
