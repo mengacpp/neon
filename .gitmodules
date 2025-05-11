@@ -1,0 +1,3 @@
+[submodule "vendor/oxygen"]
+	path = vendor/oxygen
+	url = https://github.com/mengacpp/oxygen.git

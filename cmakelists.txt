@@ -14,15 +14,15 @@ set(CMAKE_CXX_EXTENSIONS        OFF)
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 add_library(neon STATIC ${SOURCES})
 
-find_package(oxygen 0.1 REQUIRED)
+add_subdirectory(vendor/oxygen)
 
 target_include_directories(neon 
     PUBLIC 
             ${CMAKE_CURRENT_SOURCE_DIR}/include
     PRIVATE
-            ${OXYGEN_INCLUDE_DIRS})
+            ${CMAKE_CURRENT_SOURCE_DIR}/vendor/oxygen)
 
-target_link_libraries(neon oxygen::oxygen)
+target_link_libraries(neon oxygen)
 
 target_compile_features(neon PUBLIC
     cxx_std_17

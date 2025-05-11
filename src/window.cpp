@@ -1,21 +1,18 @@
 #include "neon/window.hpp"
 
+#ifdef _WIN32
 #include "neon/windows-window.hpp"
+#endif
 
-#include <iostream>
-namespace neon
+neon::Window::Window(const std::string &name)
 {
-
-Window::Window(const std::string &name) : m_name(name), m_is_initialized(false)
-{
-    std::cout << name << " created\n";
+    
 }
 
-std::unique_ptr<Window> create_window(const std::string &name)
+std::unique_ptr<neon::Window> neon::create_window(const std::string &name)
 {
 #ifdef _WIN32
     return std::make_unique<WindowsWindow>(name);
 #endif
     return nullptr;
-}
 }
