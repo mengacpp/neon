@@ -1,3 +1,5 @@
+#include "GLFW/glfw3.h"
+
 #include "neon/GLFWWindow.hpp"
 
 #include "oxygen/errors.hpp"
@@ -62,3 +64,7 @@ neon::GLFWWindow::~GLFWWindow()
 
     }
 }
+
+void neon::GLFWWindow::swap_buffers() {glfwSwapBuffers(m_glfwwindow_handle); }
+void neon::GLFWWindow::poll_events() {glfwPollEvents(); }
+bool neon::GLFWWindow::should_close() {return glfwWindowShouldClose(m_glfwwindow_handle); }

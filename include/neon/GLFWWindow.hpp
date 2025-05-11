@@ -2,7 +2,7 @@
 
 #include "window.hpp"
 
-#include "GLFW/glfw3.h"
+class GLFWwindow;
 
 namespace neon
 {
@@ -15,9 +15,9 @@ public:
 
     void init() override;
 
-    void swap_buffers() override {glfwSwapBuffers(m_glfwwindow_handle); }
-    void poll_events() override {glfwPollEvents(); }
-    bool should_close() override {return glfwWindowShouldClose(m_glfwwindow_handle); }
+    void swap_buffers() override;
+    void poll_events() override;
+    bool should_close() override;
 
 private:
     GLFWwindow *m_glfwwindow_handle;
