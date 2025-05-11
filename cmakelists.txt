@@ -15,14 +15,16 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 add_library(neon STATIC ${SOURCES})
 
 add_subdirectory(vendor/oxygen)
+add_subdirectory(vendor/glfw)
 
 target_include_directories(neon 
     PUBLIC 
             ${CMAKE_CURRENT_SOURCE_DIR}/include
     PRIVATE
-            ${CMAKE_CURRENT_SOURCE_DIR}/vendor/oxygen)
+            ${CMAKE_CURRENT_SOURCE_DIR}/vendor/oxygen/include
+            ${CMAKE_CURRENT_SOURCE_DIR}/vendor/glfw/include)
 
-target_link_libraries(neon oxygen)
+target_link_libraries(neon oxygen glfw)
 
 target_compile_features(neon PUBLIC
     cxx_std_17
