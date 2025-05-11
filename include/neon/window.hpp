@@ -18,8 +18,12 @@ public:
     virtual ~Window() = default;
 
     virtual void init() = 0;
+    
+    virtual void swap_buffers() {};
 
-    virtual void open() = 0;
+    virtual void poll_events() {};
+
+    virtual bool should_close() = 0;
 
 protected:
     std::string m_name;

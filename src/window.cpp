@@ -1,8 +1,8 @@
 #include "neon/window.hpp"
 
-#ifdef _WIN32
-#include "neon/windows-window.hpp"
-#endif
+#include "neon/GLFWWindow.hpp"
+
+#include <iostream>
 
 neon::Window::Window(const std::string &name)
 {
@@ -11,8 +11,13 @@ neon::Window::Window(const std::string &name)
 
 std::unique_ptr<neon::Window> neon::create_window(const std::string &name)
 {
-#ifdef _WIN32
-    return std::make_unique<WindowsWindow>(name);
-#endif
+    try {
+    auto window = std::make_unique<GLFWWindow>(name);
+    return window;
+    } catch (const std::exception &e) {
+        std::cout << e.what();
+        exit(-1);
+    }
+
     return nullptr;
 }
