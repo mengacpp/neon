@@ -21,7 +21,7 @@ target_include_directories(neon
     PUBLIC 
             ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-target_link_libraries(neon PRIVATE oxygen glfw)
+target_link_libraries(neon PUBLIC oxygen PRIVATE glfw)
 
 target_compile_features(neon PUBLIC
     cxx_std_17
