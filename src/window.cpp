@@ -2,22 +2,22 @@
 
 #include "neon/GLFWWindow.hpp"
 
-#include <iostream>
-
 neon::Window::Window(const std::string &name)
+  : m_name(name)
 {
     
 }
 
-std::unique_ptr<neon::Window> neon::create_window(const std::string &name)
+xgn::OutcomeOr<std::unique_ptr<neon::Window>> neon::create_window(const std::string &name)
 {
+    // we use exceptions here because its the stdlib way of handling errors
     try {
-    auto window = std::make_unique<GLFWWindow>(name);
-    return window;
-    } catch (const std::exception &e) {
-        std::cout << e.what();
-        exit(-1);
+      std::unique_ptr<Window> window = std::make_unique<GLFWWindow>(name);
+      return window;
+    } 
+    catch (const std::exception &e) {
+      return xgn::Outcome(xgn::OutcomeCode::Unknown, e.what());
     }
 
-    return nullptr;
+    return xgn::Outcome(xgn::OutcomeCode::Unknown, "Unreachable code");
 }

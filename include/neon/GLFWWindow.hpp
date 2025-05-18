@@ -2,6 +2,8 @@
 
 #include "window.hpp"
 
+#include "oxygen/outcome.hpp"
+
 class GLFWwindow;
 
 namespace neon
@@ -13,10 +15,10 @@ public:
     GLFWWindow(const std::string &name);
     ~GLFWWindow();
 
-    void init() override;
+    xgn::Outcome init() override;
 
-    void swap_buffers() override;
-    void poll_events() override;
+    xgn::Outcome swap_buffers() override;
+    xgn::Outcome poll_events() override;
     bool should_close() override;
 
 private:
